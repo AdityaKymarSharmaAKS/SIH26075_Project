@@ -21,4 +21,4 @@ npm install lucide-react
 
 
 ## How to get this project in your VS Code
-- git clone [https://github.com/AdityaKymarSharmaAKS/SIH26101.git]
+- git clone https://github.com/AdityaKymarSharmaAKS/SIH26101.git
