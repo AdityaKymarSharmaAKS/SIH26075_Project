@@ -9,8 +9,17 @@ import {
   UserPlus,
 } from "lucide-react";
 import "./login.css";
+import "./auth-themes.css";
 
 export default function Login({ onLogin, onRegister }) {
+  React.useEffect(() => {
+    const theme = localStorage.getItem("statSkillVisualTheme") || "solo";
+    const appearance = localStorage.getItem("statSkillAppearance") || "dark";
+    document.documentElement.dataset.themeMode = theme;
+    document.documentElement.dataset.appearanceMode = appearance;
+    document.body.classList.remove("theme-solo","theme-executive","theme-aurora","appearance-dark","appearance-light");
+    document.body.classList.add(`theme-${theme === "pro" ? "executive" : theme}`, `appearance-${appearance}`);
+  }, []);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,7 +42,6 @@ export default function Login({ onLogin, onRegister }) {
 
   return (
     <div className="login-page">
-
       <div className="login-background-circle circle-one"></div>
       <div className="login-background-circle circle-two"></div>
 

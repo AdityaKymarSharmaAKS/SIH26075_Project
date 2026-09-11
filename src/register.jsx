@@ -10,8 +10,17 @@ import {
   UserPlus
 } from "lucide-react";
 import "./register.css";
+import "./auth-themes.css";
 
 export default function Register({ onRegister, onBackToLogin }) {
+  React.useEffect(() => {
+    const theme = localStorage.getItem("statSkillVisualTheme") || "solo";
+    const appearance = localStorage.getItem("statSkillAppearance") || "dark";
+    document.documentElement.dataset.themeMode = theme;
+    document.documentElement.dataset.appearanceMode = appearance;
+    document.body.classList.remove("theme-solo","theme-executive","theme-aurora","appearance-dark","appearance-light");
+    document.body.classList.add(`theme-${theme === "pro" ? "executive" : theme}`, `appearance-${appearance}`);
+  }, []);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -60,9 +69,9 @@ export default function Register({ onRegister, onBackToLogin }) {
 
   return (
     <div className="register-page">
-
       {/* LEFT BRANDING SECTION */}
       <div className="register-brand">
+        <div className="register-brand-lockup">
 
         <div className="register-brand-icon">
           <BarChart3 size={28} />
@@ -86,6 +95,8 @@ export default function Register({ onRegister, onBackToLogin }) {
             <span>•</span>
             MoSPI
           </div>
+
+        </div>
 
         </div>
 

@@ -85,6 +85,16 @@
   max-width: 520px;
 }
 
+.register-brand-lockup {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 .register-brand-icon {
   width: 78px;
   height: 78px;
@@ -299,6 +309,7 @@
     border-bottom: 1px solid var(--sys-line);
   }
   .register-brand-content { text-align: center; }
+  .register-brand-lockup { align-items:center; }
   .register-brand-icon { margin: 0 auto 22px; }
   .register-description { margin: 24px auto 0; }
   .register-project { justify-content: center; margin-top: 24px; }
@@ -314,3 +325,9 @@
   .register-form-section { padding: 34px 18px 42px; }
   .register-heading h2 { font-size: 27px; }
 }
+
+
+/* Shared StatSkill theme adaptation */
+html[data-theme-mode="pro"] .login-page,html[data-theme-mode="pro"] .register-page{--sys-cyan:#c79bff;--sys-blue:#6f80ff;--sys-violet:#b79bff}
+html[data-theme-mode="aurora"] .login-page,html[data-theme-mode="aurora"] .register-page{--sys-cyan:#f3a8d2;--sys-blue:#9a8cff;--sys-violet:#d39bdc}
+.auth-theme-strip{position:fixed;top:12px;right:12px;z-index:90;display:flex;gap:5px}.auth-theme-strip button{height:28px;padding:0 8px;border:1px solid rgba(114,236,255,.24);border-radius:6px;background:rgba(8,16,29,.88);color:#9eb4ca;font-size:7px;font-weight:900;letter-spacing:.08em;cursor:pointer}.auth-theme-strip button:hover{color:#72ecff;border-color:#72ecff}

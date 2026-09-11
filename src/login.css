@@ -350,3 +350,9 @@
   .login-card { padding: 32px 24px 36px; }
   .login-brand-section h1 { font-size: 38px; }
 }
+
+
+/* Shared StatSkill theme adaptation */
+html[data-theme-mode="pro"] .login-page,html[data-theme-mode="pro"] .register-page{--sys-cyan:#c79bff;--sys-blue:#6f80ff;--sys-violet:#b79bff}
+html[data-theme-mode="aurora"] .login-page,html[data-theme-mode="aurora"] .register-page{--sys-cyan:#f3a8d2;--sys-blue:#9a8cff;--sys-violet:#d39bdc}
+.auth-theme-strip{position:fixed;top:12px;right:12px;z-index:90;display:flex;gap:5px}.auth-theme-strip button{height:28px;padding:0 8px;border:1px solid rgba(114,236,255,.24);border-radius:6px;background:rgba(8,16,29,.88);color:#9eb4ca;font-size:7px;font-weight:900;letter-spacing:.08em;cursor:pointer}.auth-theme-strip button:hover{color:#72ecff;border-color:#72ecff}
