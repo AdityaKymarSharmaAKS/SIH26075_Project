@@ -1,0 +1,226 @@
+
+/* AURORA THEME — floral, soft, elegant, unapologetically girly */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Dancing+Script:wght@600;700&display=swap');
+
+body.theme-aurora { background:#fff8fc; color:#4f3d53; font-family:"Quicksand","Inter",system-ui,sans-serif; }
+body.theme-aurora.appearance-dark { background:#1f1522; color:#f6eefa; }
+
+.app-shell.theme-aurora {
+  --bg:#fff7fc; --bg2:#f7edf8; --panel:rgba(255,255,255,.92); --panel2:rgba(255,248,253,.97);
+  --text:#4f3d53; --muted:#8a6b8c; --dim:#b596b8;
+  --line:rgba(214,101,178,.20); --line-strong:rgba(224,110,190,.48);
+  --cyan:#d0559f; --blue:#a877dd; --green:#5d9b86; --amber:#c98f57; --red:#e06f95; --purple:#b479cf;
+  --shadow:0 18px 50px rgba(196,79,161,.14);
+  font-family:"Quicksand","Inter",system-ui,sans-serif;
+  background:
+    radial-gradient(circle at 8% 6%,rgba(255,163,222,.40),transparent 24%),
+    radial-gradient(circle at 92% 4%,rgba(196,178,255,.34),transparent 26%),
+    radial-gradient(circle at 30% 96%,rgba(255,193,235,.30),transparent 30%),
+    radial-gradient(circle at 96% 90%,rgba(214,190,255,.26),transparent 28%),
+    linear-gradient(180deg,#fff9fd,#f9edf8);
+  color:var(--text);
+  position:relative;
+}
+.app-shell.theme-aurora.appearance-dark {
+  --bg:#201622; --bg2:#2b1d2e; --panel:rgba(56,36,59,.90); --panel2:rgba(63,43,67,.95);
+  --text:#fbeefb; --muted:#d9b9db; --dim:#a883ab;
+  --line:rgba(244,178,229,.16); --line-strong:rgba(247,163,222,.42);
+  --cyan:#f5a6dd; --blue:#c4a4f7; --green:#8cd0b8; --amber:#e6b877; --red:#f299b6; --purple:#dcaaea;
+  background:
+    radial-gradient(circle at 10% 8%,rgba(255,130,220,.10),transparent 26%),
+    radial-gradient(circle at 90% 90%,rgba(180,130,255,.10),transparent 28%),
+    linear-gradient(180deg,#251829,#1c1220);
+}
+
+/* floral confetti scattered around the shell — more of them, more visible */
+.app-shell.theme-aurora::before {
+  content:"✿  ❀  ✾  ♡";
+  position:fixed; top:86px; right:24px; z-index:1;
+  font-size:30px; letter-spacing:14px; color:rgba(224,86,171,.30); pointer-events:none;
+}
+.app-shell.theme-aurora::after {
+  content:"❀";
+  position:fixed; left:270px; bottom:22px; z-index:1;
+  font-size:52px; color:rgba(214,106,193,.22); pointer-events:none;
+}
+.app-shell.theme-aurora .main-area::before {
+  content:"✿";
+  position:fixed; right:6%; bottom:8%; z-index:0;
+  font-size:64px; color:rgba(197,120,220,.10); pointer-events:none;
+}
+.app-shell.theme-aurora .main-area::after {
+  content:"♡ ✾";
+  position:fixed; left:2%; top:40%; z-index:0;
+  font-size:22px; letter-spacing:8px; color:rgba(214,106,193,.14); pointer-events:none;
+}
+
+/* pink selection + scrollbar, for the full girly experience */
+.app-shell.theme-aurora ::selection { background:rgba(224,110,190,.30); color:#4f3d53; }
+.app-shell.theme-aurora.appearance-dark ::selection { background:rgba(247,163,222,.32); color:#fbeefb; }
+.app-shell.theme-aurora ::-webkit-scrollbar { width:10px; height:10px; }
+.app-shell.theme-aurora ::-webkit-scrollbar-track { background:transparent; }
+.app-shell.theme-aurora ::-webkit-scrollbar-thumb { background:linear-gradient(180deg,#f0a8dc,#c996ec); border-radius:999px; border:2px solid transparent; background-clip:padding-box; }
+
+.app-shell.theme-aurora .sidebar,
+body.theme-aurora .sidebar {
+  background:linear-gradient(180deg,#fffafd,#fbeef8);
+  border-right:1px solid rgba(214,101,178,.16);
+  box-shadow:8px 0 28px rgba(196,79,161,.08);
+}
+.app-shell.theme-aurora.appearance-dark .sidebar,
+body.theme-aurora.appearance-dark .sidebar {
+  background:linear-gradient(180deg,#2c1c30,#221623);
+  border-right-color:rgba(244,178,229,.10);
+}
+.app-shell.theme-aurora .brand-mark {
+  background:linear-gradient(145deg,#f6a8e0,#b490ef); color:#fff;
+  box-shadow:0 8px 25px rgba(214,101,178,.28); clip-path:none; border-radius:16px;
+}
+.app-shell.theme-aurora .brand > div:last-child strong {
+  font-family:"Dancing Script","Quicksand",cursive; font-size:19px; font-weight:700; letter-spacing:0;
+}
+.app-shell.theme-aurora .sidebar-status { color:#c14f99; }
+.app-shell.theme-aurora .sidebar nav button.active,
+.app-shell.theme-aurora .sidebar nav button:hover {
+  background:linear-gradient(90deg,rgba(240,168,220,.22),rgba(190,164,240,.14));
+  border-color:rgba(214,101,178,.22); box-shadow:inset 3px 0 0 #e06fb8;
+  border-radius:12px;
+}
+.app-shell.theme-aurora .sidebar nav button.active svg { color:#c8509e; }
+.app-shell.theme-aurora .sidebar nav button.active::after {
+  content:"♡"; margin-left:auto; color:#e06fb8; font-size:12px;
+}
+.app-shell.theme-aurora .sidebar-player {
+  border-radius:16px; position:relative; overflow:hidden;
+}
+.app-shell.theme-aurora .sidebar-player::before {
+  content:"✿"; position:absolute; right:8px; top:6px; font-size:26px;
+  color:rgba(224,110,190,.16); pointer-events:none;
+}
+.app-shell.theme-aurora .topbar {
+  background:rgba(255,250,253,.90); border-bottom:1px solid rgba(214,101,178,.14); backdrop-filter:blur(14px);
+}
+.app-shell.theme-aurora.appearance-dark .topbar { background:rgba(32,21,34,.88); border-bottom-color:rgba(244,178,229,.10); }
+.app-shell.theme-aurora .status-chip { color:#4e977e; border-color:rgba(93,155,134,.16); background:rgba(93,155,134,.06); border-radius:999px; }
+.app-shell.theme-aurora .icon-btn,
+.app-shell.theme-aurora .profile-chip { background:rgba(255,255,255,.72); border-color:var(--line); color:var(--text); }
+.app-shell.theme-aurora.appearance-dark .icon-btn,
+.app-shell.theme-aurora.appearance-dark .profile-chip { background:rgba(66,43,70,.72); }
+.app-shell.theme-aurora .icon-btn { border-radius:999px; }
+.app-shell.theme-aurora .icon-btn:hover { color:#d0559f; border-color:rgba(214,101,178,.35); }
+.app-shell.theme-aurora .notification i {
+  background:linear-gradient(135deg,#f082c2,#d992ef); box-shadow:0 0 0 2px var(--panel), 0 0 10px rgba(224,110,190,.55);
+}
+.app-shell.theme-aurora .notification-panel { border-radius:18px; }
+.app-shell.theme-aurora .notification-dot { background:var(--cyan); box-shadow:0 0 6px rgba(224,110,190,.45); }
+.app-shell.theme-aurora .profile-chip { border-radius:999px; }
+.app-shell.theme-aurora .profile-chip > span {
+  background:linear-gradient(145deg,#f0a8dc,#b490ef); border-radius:999px; box-shadow:0 4px 12px rgba(214,101,178,.25);
+}
+
+.app-shell.theme-aurora .system-card {
+  border-radius:20px; clip-path:none; box-shadow:var(--shadow); background:var(--panel); overflow:hidden;
+}
+.app-shell.theme-aurora .system-card::before { opacity:.22; background:linear-gradient(90deg,#ec9ad5,#b79bef,#f0a8cf); }
+.app-shell.theme-aurora .page-heading { position:relative; }
+.app-shell.theme-aurora .page-heading::after {
+  content:"❀"; position:absolute; right:22px; top:14px; font-size:26px;
+  color:rgba(214,101,178,.16); pointer-events:none;
+}
+.app-shell.theme-aurora .page-heading h1,
+.app-shell.theme-aurora .card-header h2,
+.app-shell.theme-aurora .system-card h2 {
+  font-family:"Dancing Script","Quicksand",cursive; font-weight:700; letter-spacing:0;
+}
+.app-shell.theme-aurora .page-heading h1 { font-size:clamp(32px,3.4vw,46px); }
+
+.app-shell.theme-aurora .system-label,
+.app-shell.theme-aurora .small-label,
+.app-shell.theme-aurora .kicker,
+.app-shell.theme-aurora .eyebrow { color:#c8509e; letter-spacing:.16em; }
+.app-shell.theme-aurora.appearance-dark .system-label,
+.app-shell.theme-aurora.appearance-dark .small-label,
+.app-shell.theme-aurora.appearance-dark .kicker,
+.app-shell.theme-aurora.appearance-dark .eyebrow { color:#f5a6dd; }
+
+.app-shell.theme-aurora .primary-btn {
+  background:linear-gradient(135deg,#f0a1d9,#b490ef); border:0; color:#fff;
+  box-shadow:0 10px 24px rgba(214,101,178,.24); clip-path:none; border-radius:999px;
+}
+.app-shell.theme-aurora .primary-btn:hover { box-shadow:0 12px 28px rgba(214,101,178,.34); }
+.app-shell.theme-aurora .secondary-btn,
+.app-shell.theme-aurora .theme-switch,
+.app-shell.theme-aurora .ghost-btn { border-radius:999px; clip-path:none; }
+.app-shell.theme-aurora .secondary-btn { border-color:rgba(214,101,178,.30); }
+.app-shell.theme-aurora .logout-btn { border-radius:999px; }
+.app-shell.theme-aurora .theme-option { border-radius:14px; clip-path:none; background:rgba(255,255,255,.64); }
+.app-shell.theme-aurora.appearance-dark .theme-option { background:rgba(70,45,74,.68); }
+.app-shell.theme-aurora .theme-option.active { border-color:rgba(216,120,193,.55); background:linear-gradient(135deg,rgba(240,168,220,.22),rgba(180,144,239,.16)); }
+.app-shell.theme-aurora .theme-dot.aurora { background:linear-gradient(135deg,#f0a1d9,#b490ef); box-shadow:none; }
+.app-shell.theme-aurora .theme-dot.executive { background:#b99550; }
+.app-shell.theme-aurora .theme-dot.solo { background:#5b9cff; }
+.app-shell.theme-aurora .field-label input,
+.app-shell.theme-aurora .search,
+.app-shell.theme-aurora .input-wrapper { border-radius:12px; clip-path:none; }
+.app-shell.theme-aurora .field-label input:focus,
+.app-shell.theme-aurora .search:focus-within { border-color:rgba(214,101,178,.45); box-shadow:0 0 0 3px rgba(214,101,178,.10); }
+.app-shell.theme-aurora .language-buttons button,
+.app-shell.theme-aurora .theme-switch { border-radius:999px; }
+.app-shell.theme-aurora .language-buttons button.active { background:var(--cyan); border-color:var(--cyan); color:#fff; }
+
+.app-shell.theme-aurora .mini-icon,
+.app-shell.theme-aurora .stat-icon,
+.app-shell.theme-aurora .file-icon,
+.app-shell.theme-aurora .timeline-node { border-radius:12px; }
+.app-shell.theme-aurora .pill { border-radius:999px; }
+.app-shell.theme-aurora .progress { border-radius:999px; overflow:hidden; }
+.app-shell.theme-aurora .progress-fill { border-radius:999px; }
+
+/* Aurora: velvet, rose light and quiet particles — cinematic without changing the layout. */
+.app-shell.theme-aurora.appearance-dark { background:radial-gradient(circle at 12% 10%,rgba(255,103,186,.16),transparent 25%),radial-gradient(circle at 86% 15%,rgba(214,132,255,.13),transparent 28%),radial-gradient(circle at 70% 90%,rgba(255,104,167,.09),transparent 30%),linear-gradient(135deg,#100912 0%,#211126 45%,#120b16 100%); }
+.app-shell.theme-aurora::before { content:""; position:fixed; inset:0; z-index:0; pointer-events:none; background-image:radial-gradient(circle,rgba(255,193,224,.5) 0 1px,transparent 1.5px),radial-gradient(circle,rgba(198,165,255,.34) 0 1px,transparent 1.5px); background-size:88px 88px,137px 137px; background-position:14px 22px,51px 70px; opacity:.38; animation:auroraDrift 18s linear infinite; }
+.app-shell.theme-aurora::after { content:""; position:fixed; inset:-25%; z-index:0; pointer-events:none; background:radial-gradient(ellipse at 22% 27%,rgba(255,88,174,.16),transparent 18%),radial-gradient(ellipse at 76% 36%,rgba(198,137,255,.13),transparent 20%); filter:blur(18px); animation:auroraGlow 12s ease-in-out infinite alternate; }
+.app-shell.theme-aurora .main-area::before,.app-shell.theme-aurora .main-area::after { content:none; }
+.app-shell.theme-aurora.appearance-dark .sidebar { background:linear-gradient(180deg,rgba(27,14,31,.94),rgba(16,9,19,.94)); }
+.app-shell.theme-aurora .system-card { backdrop-filter:blur(18px); }
+.app-shell.theme-aurora.appearance-dark .page-heading h1 { text-shadow:0 0 28px rgba(255,145,204,.25); }
+.app-shell.theme-aurora .profile-photo-preview { border-radius:50%; box-shadow:0 0 0 4px rgba(240,161,217,.12),0 10px 28px rgba(208,85,159,.26); }
+.app-shell.theme-aurora .photo-upload,.app-shell.theme-aurora .photo-remove { border-radius:999px; }
+@keyframes auroraDrift { to { background-position:102px 110px,188px 207px; } }
+@keyframes auroraGlow { to { transform:translate3d(3%,-2%,0) scale(1.04); opacity:.75; } }
+@media (prefers-reduced-motion:reduce) { .app-shell.theme-aurora::before,.app-shell.theme-aurora::after { animation:none; } }
+
+/* Girly theme motion: soft and atmospheric, never distracting. */
+.app-shell.theme-aurora main > .stack > * { animation:auroraReveal .52s cubic-bezier(.2,.75,.2,1) both; }
+.app-shell.theme-aurora main > .stack > *:nth-child(2) { animation-delay:.08s; }
+.app-shell.theme-aurora main > .stack > *:nth-child(3) { animation-delay:.16s; }
+.app-shell.theme-aurora .system-card { transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease; }
+.app-shell.theme-aurora .system-card:hover { transform:translateY(-2px); box-shadow:0 22px 48px rgba(208,85,159,.19); border-color:rgba(240,161,217,.45); }
+@keyframes auroraReveal { from { opacity:0; transform:translateY(12px) scale(.992); } to { opacity:1; transform:translateY(0) scale(1); } }
+@media (prefers-reduced-motion:reduce) { .app-shell.theme-aurora main > .stack > * { animation:none; } .app-shell.theme-aurora .system-card { transition:none; } }
+
+.app-shell.theme-aurora .live-dot { animation:auroraPulse 2s ease-in-out infinite; }
+.app-shell.theme-aurora .system-card::after { animation:auroraLine 3.6s ease-in-out infinite; }
+@keyframes auroraPulse { 50% { transform:scale(1.28); box-shadow:0 0 18px rgba(245,166,221,.9); } }
+@keyframes auroraLine { 50% { opacity:.9; left:10%; right:10%; } }
+@media (prefers-reduced-motion:reduce) { .app-shell.theme-aurora .live-dot,.app-shell.theme-aurora .system-card::after { animation:none; } }
+
+/* AURORA — a fuller garden layer: flowers drift underneath the interface, sparkles stay subtle. */
+.app-shell.theme-aurora .main-area { position:relative; isolation:isolate; }
+.app-shell.theme-aurora .main-area > * { position:relative; z-index:1; }
+.app-shell.theme-aurora .main-area::before {
+  content:"✿  ·  ❀  ·  ✾  ·  ✿  ·  ❀  ·  ✾  ·  ✿";
+  position:fixed; inset:16% -5% auto -2%; z-index:0; pointer-events:none;
+  color:rgba(244,148,208,.23); font:34px/2.8 "Dancing Script",cursive; letter-spacing:6vw;
+  white-space:pre-wrap; word-spacing:6vw; animation:auroraGarden 20s ease-in-out infinite alternate;
+}
+.app-shell.theme-aurora .main-area::after {
+  content:"✦  ·  ✧  ·  ✦  ·  ✧  ·  ✦  ·  ✧";
+  position:fixed; inset:auto -4% 10% 4%; z-index:0; pointer-events:none;
+  color:rgba(246,190,234,.36); font:18px/2.5 "Quicksand",sans-serif; letter-spacing:7vw;
+  white-space:pre-wrap; animation:auroraSparks 14s ease-in-out infinite alternate;
+}
+.app-shell.theme-aurora .system-card:hover { box-shadow:0 24px 52px rgba(208,85,159,.22),0 0 28px rgba(232,143,210,.12); }
+@keyframes auroraGarden { to { transform:translate3d(2.5vw,-12px,0) rotate(.4deg); opacity:.78; } }
+@keyframes auroraSparks { to { transform:translate3d(-3vw,-18px,0); opacity:.75; } }
+@media (prefers-reduced-motion:reduce) { .app-shell.theme-aurora .main-area::before,.app-shell.theme-aurora .main-area::after { animation:none; } }
