@@ -1,115 +1,30 @@
-# StatSkill AI — FastAPI Demo Integration
+# StatSkill AI
 
-This bundle connects the existing StatSkill AI UI to a FastAPI backend without changing the existing theme or language CSS.
+StatSkill AI is a local React/Vite application backed by a FastAPI demo API.
 
-## 1. Start FastAPI
+## Run on Windows
 
-```bash
-cd backend
-python -m venv .venv
+1. Run `START_BACKEND.bat` from the project root. It installs `backend/requirements.txt` with Python 3.14 and starts FastAPI on port 8000.
+2. Run `START_FRONTEND.bat`. It installs the frontend dependencies and starts Vite on port 5173.
+3. Open `http://127.0.0.1:5173`.
 
-# Windows
-.venv\\Scripts\\activate
+The backend API documentation is available at `http://127.0.0.1:8000/docs`.
 
-# macOS/Linux
-source .venv/bin/activate
+## Demo login
 
-pip install -r requirements.txt
+- Email: `ananya.verma@demo.gov.in`
+- Password: `Demo@12345`
 
-# Optional admin JSON push key
-# Windows PowerShell:
-$env:STATSKILL_ADMIN_KEY="change-this-in-production"
-# macOS/Linux:
-export STATSKILL_ADMIN_KEY="change-this-in-production"
+New accounts can be created from the sign-in screen. Account data is stored in `backend/demo.json`; sessions are kept in memory and end when the backend restarts. This setup is intended for local demonstration, not production authentication.
 
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
-```
-
-## 2. Start frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-The frontend defaults to `http://localhost:8000`, or you can create `.env` from `.env.example` and set `VITE_API_BASE_URL`.
-
-## 3. Demo login
-
-Email: `ananya.verma@demo.gov.in`
-Password: `Demo@12345`
-
-## What is dynamic
-
-The login response and refresh response contain the complete user snapshot:
-
-- profile / identity / department / project
-- dashboard KPIs
-- competency scores and benchmark comparison
-- assessment / assignment records and scores
-- course records and course scores
-- learning path / modules / progress / lessons
-- self-assessment
-- learning hours
-- documents
-- certificates
-- notifications
-- derived critical skill gaps and recommendations
-- competency-engine evidence
-
-The browser refreshes `/api/me/data` every 15 seconds while signed in. Therefore a new JSON value pushed to the backend is picked up without manually changing React constants.
-
-## Push new JSON data
-
-Send the complete demo dataset to:
-
-`PUT /api/admin/data`
-
-with:
-
-`X-Admin-Key: <your STATSKILL_ADMIN_KEY>`
-
-Example body shape:
-
-```json
-{
-  "data": {
-    "user": {
-      "id": "USR-001",
-      "name": "Ananya Verma",
-      "email": "ananya.verma@demo.gov.in",
-      "password": "Demo@12345",
-      "role": "Statistical Investigator",
-      "department": "MoSPI",
-      "projectId": "SIH26101"
-    },
-    "competencyScores": {
-      "statisticalMethods": 4.9
-    },
-    "assessments": [],
-    "courses": [],
-    "selfAssessment": {},
-    "learningHours": {},
-    "modules": [],
-    "documents": [],
-    "certificates": [],
-    "notifications": []
-  }
-}
-```
-
-For a partial competency update from an upstream system, merge that update into your existing dataset before calling the endpoint. The frontend will then receive the complete recalculated snapshot on its next refresh.
-
-## API endpoints
+## API
 
 - `GET /health`
 - `POST /api/auth/login`
+- `POST /api/auth/register`
 - `POST /api/auth/logout`
 - `GET /api/me`
 - `GET /api/me/data`
-- `GET /api/users/{email}/data` (demo lookup)
+- `GET /api/users/{email}/data` (demo account only)
 - `PUT /api/me/profile`
-- `PUT /api/admin/data`
-
-Swagger UI: `http://localhost:8000/docs`
+- `PUT /api/admin/data` (requires `STATSKILL_ADMIN_KEY`)

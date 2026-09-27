@@ -450,6 +450,18 @@ async function apiLogin(email, password){
   return payload;
 }
 
+async function apiRegister({ name, email, password }) {
+  const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Accept": "application/json" },
+    body: JSON.stringify({ name: name.trim(), email: email.trim(), password }),
+    cache: "no-store"
+  });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(payload?.detail || "Unable to create account.");
+  return payload;
+}
+
 async function apiFetchMe(token){
   const response = await fetch(`${API_BASE_URL}/api/me/data`, {
     method:"GET",
@@ -993,22 +1005,20 @@ export default function App() {
     }
   };
 
-  const handleRegister = data => {
-    const next = {
-      name: data.name.trim(),
-      email: data.email.trim(),
-      password: data.password,
-      role: "Statistical Investigator",
-      department: "MoSPI",
-      projectId: "SIH26101",
-    };
-    localStorage.setItem("statSkillUser", JSON.stringify(next));
-    setUser(next);
-    localStorage.removeItem("statSkillSession");
-    localStorage.removeItem(API_TOKEN_KEY);
-    setApiToken("");
-    setLoggedIn(false);
-    setRegister(false);
+  const handleRegister = async (data) => {
+    try {
+      const result = await apiRegister(data);
+      const token = result.access_token;
+      localStorage.setItem(API_TOKEN_KEY, token);
+      localStorage.setItem("statSkillSession", "active");
+      setApiToken(token);
+      applyApiSnapshot(result.data);
+      setLoggedIn(true);
+      setRegister(false);
+      setActive("Dashboard");
+    } catch (error) {
+      alert(error.message || "Unable to create account.");
+    }
   };
 
   const saveUserProfile = async (nextUser) => {

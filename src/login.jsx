@@ -21,8 +21,8 @@ export default function Login({ onLogin, onRegister }) {
     document.body.classList.add(`theme-${theme === "pro" ? "executive" : theme}`, `appearance-${appearance}`);
   }, []);
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("ananya.verma@demo.gov.in");
-  const [password, setPassword] = useState("Demo@12345");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();

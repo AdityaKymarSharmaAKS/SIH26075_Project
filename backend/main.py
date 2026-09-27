@@ -53,6 +53,12 @@ class LoginRequest(BaseModel):
     password: str = Field(min_length=1)
 
 
+class RegisterRequest(BaseModel):
+    name: str = Field(min_length=1, max_length=120)
+    email: EmailStr
+    password: str = Field(min_length=6)
+
+
 class UserUpdateRequest(BaseModel):
     name: str | None = None
 
@@ -90,6 +96,29 @@ def sanitize_user(user: dict[str, Any]) -> dict[str, Any]:
         key: value
         for key, value in user.items()
         if key.lower() not in {"password", "password_hash"}
+    }
+
+
+def find_account_data(data: dict[str, Any], email: str) -> dict[str, Any] | None:
+    normalized_email = email.strip().lower()
+    for account_data in [data, *(data.get("accounts") or [])]:
+        user = account_data.get("user") or {}
+        if user.get("email", "").strip().lower() == normalized_email:
+            return account_data
+    return None
+
+
+def empty_account_data(user: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "user": user,
+        "assessments": [],
+        "courses": [],
+        "selfAssessment": {},
+        "learningHours": {},
+        "modules": [],
+        "documents": [],
+        "certificates": [],
+        "notifications": [],
     }
 
 
@@ -394,15 +423,14 @@ def get_session_user(authorization: str | None = Header(default=None)) -> dict[s
             detail="Invalid or expired session.",
         )
 
-    data = read_demo()
-    user = data.get("user") or {}
-    if user.get("email", "").lower() != email.lower():
+    account_data = find_account_data(read_demo(), email)
+    if account_data is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Session user no longer exists.",
         )
 
-    return user
+    return account_data["user"]
 
 
 
@@ -574,7 +602,7 @@ def root() -> str:
     <p class="lead">The FastAPI authentication and user data service is running and serving requests for StatSkill AI.</p>
 
     <div class="links-grid">
-      <a href="http://localhost:5175" class="btn btn-primary" target="_blank">🌐 Open Frontend (App)</a>
+    <a href="http://localhost:5173" class="btn btn-primary" target="_blank">🌐 Open Frontend (App)</a>
       <a href="/docs" class="btn btn-secondary">📖 Interactive Swagger API</a>
       <a href="/health" class="btn btn-secondary">❤️ Health Check</a>
     </div>
@@ -595,6 +623,7 @@ def root() -> str:
       <h3>📡 Core Endpoints</h3>
       <ul class="endpoint-list">
         <li><span class="method">POST</span> /api/auth/login</li>
+        <li><span class="method">POST</span> /api/auth/register</li>
         <li><span class="method">GET</span> /api/me/data</li>
         <li><span class="method">GET</span> /api/users/{email}/data</li>
         <li><span class="method">PUT</span> /api/me/profile</li>
@@ -613,15 +642,20 @@ def health() -> dict[str, str]:
 @app.post("/api/auth/login")
 def login(request: LoginRequest) -> dict[str, Any]:
     data = read_demo()
-    user = data.get("user") or {}
+    account_data = find_account_data(data, str(request.email))
+    if account_data is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid email or password.",
+        )
 
-    email_matches = user.get("email", "").strip().lower() == request.email.strip().lower()
+    user = account_data["user"]
     password_matches = secrets.compare_digest(
         str(user.get("password", "")),
         request.password,
     )
 
-    if not (email_matches and password_matches):
+    if not password_matches:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password.",
@@ -633,7 +667,40 @@ def login(request: LoginRequest) -> dict[str, Any]:
     return {
         "access_token": token,
         "token_type": "bearer",
-        "data": build_user_payload(data),
+        "data": build_user_payload(account_data),
+    }
+
+
+@app.post("/api/auth/register", status_code=status.HTTP_201_CREATED)
+def register(request: RegisterRequest) -> dict[str, Any]:
+    data = read_demo()
+    email = str(request.email).strip().lower()
+    if find_account_data(data, email):
+        raise HTTPException(status_code=409, detail="An account with this email already exists.")
+
+    name = request.name.strip()
+    if not name:
+        raise HTTPException(status_code=400, detail="Name cannot be empty.")
+
+    user = {
+        "id": f"USR-{secrets.token_hex(4).upper()}",
+        "name": name,
+        "email": email,
+        "password": request.password,
+        "role": "Statistical Investigator",
+        "department": "MoSPI",
+        "projectId": "SIH26101",
+    }
+    account_data = empty_account_data(user)
+    data.setdefault("accounts", []).append(account_data)
+    write_demo(data)
+
+    token = secrets.token_urlsafe(32)
+    SESSIONS[token] = email
+    return {
+        "access_token": token,
+        "token_type": "bearer",
+        "data": build_user_payload(account_data),
     }
 
 
@@ -647,20 +714,24 @@ def logout(authorization: str | None = Header(default=None)) -> dict[str, bool]:
 @app.get("/api/me")
 def me(user: dict[str, Any] = Depends(get_session_user)) -> dict[str, Any]:
     data = read_demo()
-    return {"user": sanitize_user(user), "data": build_user_payload(data)}
+    account_data = find_account_data(data, user["email"])
+    if account_data is None:
+        raise HTTPException(status_code=401, detail="Session user no longer exists.")
+    return {"user": sanitize_user(user), "data": build_user_payload(account_data)}
 
 
 @app.get("/api/me/data")
 def my_data(user: dict[str, Any] = Depends(get_session_user)) -> dict[str, Any]:
-    return build_user_payload(read_demo())
+    account_data = find_account_data(read_demo(), user["email"])
+    if account_data is None:
+        raise HTTPException(status_code=401, detail="Session user no longer exists.")
+    return build_user_payload(account_data)
 
 
 @app.get("/api/users/{email}/data")
 def public_demo_lookup(email: EmailStr) -> dict[str, Any]:
     data = read_demo()
     user = data.get("user") or {}
-
-    # This endpoint is intentionally demo-only and returns no password.
     if user.get("email", "").lower() != str(email).lower():
         raise HTTPException(status_code=404, detail="User not found.")
 
@@ -692,7 +763,10 @@ def update_profile(
     user: dict[str, Any] = Depends(get_session_user),
 ) -> dict[str, Any]:
     data = read_demo()
-    stored_user = data.get("user") or {}
+    account_data = find_account_data(data, user["email"])
+    if account_data is None:
+        raise HTTPException(status_code=401, detail="Session user no longer exists.")
+    stored_user = account_data.get("user") or {}
 
     if request.name is not None:
         cleaned = request.name.strip()
@@ -700,6 +774,6 @@ def update_profile(
             raise HTTPException(status_code=400, detail="Name cannot be empty.")
         stored_user["name"] = cleaned
 
-    data["user"] = stored_user
+    account_data["user"] = stored_user
     write_demo(data)
-    return build_user_payload(data)
+    return build_user_payload(account_data)
