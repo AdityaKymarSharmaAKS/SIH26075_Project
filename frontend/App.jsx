@@ -669,7 +669,7 @@ function DashboardPage({ user, lang, onNavigate, engine, data }) {
   );
 }
 
-function CompetenciesPage({ engine, lang }) {
+function CompetenciesPage({ engine, lang, data }) {
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState(null);
   const filtered = useMemo(() => engine.competencies.filter(c => c.name.toLowerCase().includes(query.toLowerCase())), [engine.competencies, query]);
@@ -1147,7 +1147,7 @@ export default function App() {
   const pageData = profileData || competencyData || {};
   const content = {
     Dashboard: <DashboardPage user={user || {}} lang={lang} onNavigate={setActive} engine={engine} data={pageData} />,
-    "My Competencies": <CompetenciesPage engine={engine} lang={lang} />,
+    "My Competencies": <CompetenciesPage engine={engine} lang={lang} data={pageData} />,
     "Learning Path": <LearningPage lang={lang} data={pageData} engine={engine} />,
     Assessments: <AssessmentsPage lang={lang} data={pageData} engine={engine} />,
     "My Documents": <DocumentsPage lang={lang} data={pageData} />,
