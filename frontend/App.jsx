@@ -43,6 +43,8 @@ import Register from "./register.jsx";
 import "./solo.css";
 import "./executive.css";
 import "./aurora.css";
+import "./modal.css";
+import AssessmentDetailsModal from "./AssessmentDetailsModal.jsx";
 
 const NAV = [
   { id: "Dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -764,7 +766,7 @@ function LearningPage({ lang, data, engine }) {
   </div>;
 }
 
-function AssessmentsPage({ lang, data, engine }) {
+function AssessmentsPage({ lang, data, engine, onOpenDetails }) {
   const assessments = data?.assessments || [];
   const averageScore = engine.assessmentAverage || 0;
   const assignments = data?.assignments || [];
@@ -782,7 +784,7 @@ function AssessmentsPage({ lang, data, engine }) {
         {assessments.map((a, i) => <div className={`assessment ${["blue","amber","green","purple","red"][i % 5]}`} key={a.id || a.title || i}>
           <div className="assessment-number">0{(i + 1)}</div>
           <div className="grow"><strong>{a.title || "Assessment"}</strong><span>{a.domain || "—"} · Score {Number(a.score ?? 0)}% · {a.status || "Recorded"}</span></div>
-          <button className="secondary-btn">{tr(lang,"openDetails")} <ChevronRight size={14} /></button>
+          <button className="secondary-btn" onClick={() => onOpenDetails && onOpenDetails(a)}>{tr(lang,"openDetails")} <ChevronRight size={14} /></button>
         </div>)}
       </div>
     </SystemCard>
@@ -1012,6 +1014,8 @@ export default function App() {
   const [active, setActive] = useState("Dashboard");
   const [menuOpen, setMenuOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
+  const [selectedAssessment, setSelectedAssessment] = useState(null);
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const notifications = notificationsFor(lang);
 
   const applyApiSnapshot = (snapshot) => {
@@ -1149,7 +1153,7 @@ export default function App() {
     Dashboard: <DashboardPage user={user || {}} lang={lang} onNavigate={setActive} engine={engine} data={pageData} />,
     "My Competencies": <CompetenciesPage engine={engine} lang={lang} data={pageData} />,
     "Learning Path": <LearningPage lang={lang} data={pageData} engine={engine} />,
-    Assessments: <AssessmentsPage lang={lang} data={pageData} engine={engine} />,
+    Assessments: <AssessmentsPage lang={lang} data={pageData} engine={engine} onOpenDetails={(a)=>{setSelectedAssessment(a);setDetailsOpen(true);}} />,
     "My Documents": <DocumentsPage lang={lang} data={pageData} />,
     Certificates: <CertificatesPage lang={lang} data={pageData} />,
     Analytics: <AnalyticsPage engine={engine} lang={lang} data={pageData} />,
@@ -1190,6 +1194,7 @@ export default function App() {
           {content}
         </main>
       </div>
+      <AssessmentDetailsModal assessment={selectedAssessment} open={detailsOpen} onClose={() => setDetailsOpen(false)} />
     </div>
   );
 }

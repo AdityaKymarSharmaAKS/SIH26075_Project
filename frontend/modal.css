@@ -1,0 +1,22 @@
+.adm-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.5);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+.adm-modal{
+  background:var(--surface, #0b1220);
+  color:var(--text, #e6eef8);
+  width:min(720px,90%);
+  border-radius:8px;
+  box-shadow:0 8px 30px rgba(2,6,23,0.6);
+  overflow:hidden;
+}
+.adm-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.04);}
+.adm-body{padding:18px 20px;line-height:1.5}
+.adm-footer{padding:12px 20px;border-top:1px solid rgba(255,255,255,0.03);display:flex;justify-content:flex-end}
+.adm-close{background:transparent;border:0;color:inherit;font-size:20px;line-height:1;cursor:pointer}
+.adm-desc p{margin:8px 0 0}
