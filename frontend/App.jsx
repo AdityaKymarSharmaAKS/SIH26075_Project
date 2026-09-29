@@ -205,7 +205,8 @@ function safeUser() {
   }
 }
 
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "http://localhost:8000").replace(/\/$/, "");
+/*const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "http://localhost:8000").replace(/\/$/, "");*/
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "https://statskill-ftech-backend.vercel.app").replace(/\/$/, "");
 const API_TOKEN_KEY = "statSkillApiToken";
 const API_REFRESH_MS = 5000;
 
